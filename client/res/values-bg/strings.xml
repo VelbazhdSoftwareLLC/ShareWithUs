@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="hello_world"/>
+    <string name="app_name">Сподели с нас</string>
+    <string name="title_activity_lobby">Сподели с нас</string>
+    <string name="send_request_label">Направи запитване</string>
+    <string name="join_the_team_label">Присъедини се към екипа</string>
+    <string name="about_label">За нас</string>
+    <string name="exit_label">Изход</string>
+    <string name="request_send_label">Изпрати</string>
+    <string name="join_team_send_label">Изпрати</string>
+    <string name="names_label">Имена:</string>
+    <string name="email_label">Имейл:</string>
+    <string name="phone_label">Телефон:</string>
+    <string name="title_activity_about">За нас</string>
+    <string name="title_activity_request">Запитване</string>
+    <string name="title_activity_join_team">Присъедини се към екипа</string>
+    <string name="about_text">„Сподели с нас е мобилно приложение, реализиращо метода Делфи за групово вземане на решения. Приложението е разработено като дипломна работа от Венцислав Медаров, студент в ТУ-София, Факултет по телекомуникации, град София, 2016 година.</string>
+    <string name="request_message_send">Изпратено</string>
+    <string name="join_request_send">Изпратено</string>
+    <string name="title_activity_answer_message">Отговор</string>
+    <string name="reject_replay_label">Пропусни</string>
+    <string name="replay_later_label">Не сега</string>
+    <string name="send_replay_label">Изпрати отговор</string>
+    <string name="discard_replay">Неотговорено</string>
+</resources>
