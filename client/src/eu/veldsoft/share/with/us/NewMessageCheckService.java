@@ -232,7 +232,10 @@ public class NewMessageCheckService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		helper = new MessageHistoryDatabaseHelper(this);
+
+		if (helper == null) {
+			helper = new MessageHistoryDatabaseHelper(this);
+		}
 	}
 
 	/**

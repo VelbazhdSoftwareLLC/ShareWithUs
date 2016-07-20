@@ -6,14 +6,13 @@ define("DBNAME", "veldsoft_share");
 
 $GLOBALS[ 'link' ] = null;
 
-function open_my_db()
-{
+function open_my_db() {
 	$GLOBALS[ 'link' ] = mysql_connect(HOSTNAME, USERNAME, PASSWORD);
 	mysql_select_db( DBNAME );
+	mysql_query("SET NAMES 'utf8'");
 }
 
-function query_my_db( $qrystr )
-{
+function query_my_db( $qrystr ) {
 	$qrystr = eregi_replace("\;$", "", $qrystr);
 
 	$resstrs = "";
@@ -24,14 +23,14 @@ function query_my_db( $qrystr )
 
 		$j = 0;
 		if($result!=1 && $result!=false) {
-			while($row = mysql_fetch_row($result))
-			{
-				for($i=0; $i<mysql_num_fields($result); $i++)
-				$resstrs[ $j ][ $i ] = $row[ $i ];
+			while($row = mysql_fetch_row($result)) {
+				for($i=0; $i<mysql_num_fields($result); $i++) {
+					$resstrs[ $j ][ $i ] = $row[ $i ];
+				}
 
 				$j++;
 			}
-     	} else {
+    } else {
 			$resstrs = false;
 		}
 	}
@@ -39,10 +38,9 @@ function query_my_db( $qrystr )
 	return( $resstrs );
 }
 
-
-function close_my_db()
-{
-	if( $GLOBALS['link'] )
+function close_my_db() {
+	if( $GLOBALS['link'] ) {
 		mysql_close( $GLOBALS['link'] );
+	}
 }
 ?>

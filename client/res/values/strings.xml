@@ -15,7 +15,7 @@
     <string name="title_activity_about">About</string>
     <string name="title_activity_request">Request</string>
     <string name="title_activity_join_team">Join the Team</string>
-    <string name="about_text">Share With Me is a mobile application for Delphi Method group decision making. The application was developed as BSc final thesis by Ventsislav Medarov, student at TU-Sofia, Telecommunications Faculty, Sofia City, 2016.</string>
+    <string name="about_text">Share With Us is a mobile application for Delphi Method group decision making. The application was developed as BSc final thesis by Ventsislav Medarov, student at TU-Sofia, Telecommunications Faculty, Sofia City, 2016.</string>
     <string name="request_message_send">Message Send</string>
     <string name="join_request_send">Join Request Send</string>
     <string name="title_activity_answer_message">Answer</string>
