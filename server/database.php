@@ -30,7 +30,7 @@ function query_my_db( $qrystr ) {
 
 				$j++;
 			}
-    } else {
+		} else {
 			$resstrs = false;
 		}
 	}

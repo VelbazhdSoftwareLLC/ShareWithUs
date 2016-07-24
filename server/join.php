@@ -31,7 +31,7 @@ if(isset($_POST['join'])) {
 	//TODO Replace SQL with stored procedure call.
 	query_my_db( "INSERT INTO consultants (instance_hash, names, email, phone) VALUES ('".$instance_hash."', '".$names."', '".$email."', '".$phone."');" );
 	$admin = query_my_db( "select adminmail from servinfo;" );
-  close_my_db();
+	close_my_db();
 
 	if($admin != false){
 		$message .= 'Name: ' . $name;

@@ -42,6 +42,7 @@ if(isset($_POST['replay'])) {
 	$message_hash = "";
 	$instance_hash = "";
 	$message = "";
+	$rating = "";
 
 	//TODO Have in mind that JSON message can be broken.
 	$json = json_decode($_POST['replay'], true);
@@ -62,8 +63,8 @@ if(isset($_POST['replay'])) {
 	}
 
 	//TODO Replace SQL with stored procedure call.
-	query_my_db( "INSERT INTO correspondence (parent_hash, message_hash, instance_hash, message) VALUES ('".$parent_hash."', '".$message_hash."', '".$instance_hash."', '".$message."');" );
-  close_my_db();
+	query_my_db( "INSERT INTO correspondence (parent_hash, message_hash, instance_hash, rating, message) VALUES ('".$parent_hash."', '".$message_hash."', '".$instance_hash."', '".$rating."', '".$message."');" );
+	close_my_db();
 
 	//TODO Inform all moderators.
 }
