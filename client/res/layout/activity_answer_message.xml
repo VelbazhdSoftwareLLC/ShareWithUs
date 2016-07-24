@@ -5,11 +5,6 @@
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <RatingBar
-        android:id="@+id/replay_rating"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
     <EditText
         android:id="@+id/message_read"
         android:layout_width="fill_parent"
@@ -50,6 +45,14 @@
 
         <requestFocus />
     </EditText>
+
+    <RatingBar
+        android:id="@+id/replay_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="6"
+        android:rating="3.0"
+        android:stepSize="1.0" />
 
     <Button
         android:id="@+id/send_replay"

@@ -27,6 +27,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Toast;
 import eu.veldsoft.share.with.us.model.Util;
 import eu.veldsoft.share.with.us.storage.MessageHistoryDatabaseHelper;
@@ -212,6 +213,7 @@ public class AnswerMessageActivity extends Activity {
 								.getLeastSignificantBits());
 						String message = ((EditText) findViewById(R.id.message_write))
 								.getText().toString();
+						String rating = "" + ((RatingBar) findViewById(R.id.replay_rating)).getRating();
 
 						HttpClient client = new DefaultHttpClient();
 						client.getParams().setParameter(
@@ -227,6 +229,7 @@ public class AnswerMessageActivity extends Activity {
 							json.put(Util.JSON_MESSAGE_HASH_CODE_KEY,
 									messageHash);
 							json.put(Util.JSON_MESSAGE_KEY, message);
+							json.put(Util.JSON_RATING_KEY, rating);
 						} catch (JSONException exception) {
 							System.err.println(exception);
 						}

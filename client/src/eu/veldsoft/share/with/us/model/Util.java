@@ -50,6 +50,11 @@ final public class Util {
 	public static final String JSON_MESSAGE_KEY = "message";
 
 	/**
+	 * Message JSON key value.
+	 */
+	public static final String JSON_RATING_KEY = "rating";
+
+	/**
 	 * Global data-time message registration JSON key value.
 	 */
 	public static final String JSON_REGISTERED_KEY = "registered";
