@@ -23,7 +23,6 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
@@ -35,15 +34,30 @@ import eu.veldsoft.share.with.us.model.Util;
 import eu.veldsoft.share.with.us.storage.MessageHistoryDatabaseHelper;
 
 /**
- * Demon process for new message chcking.
+ * Demon process for new message checking.
  * 
  * @author Ventsislav Medarov
  */
 public class NewMessageCheckService extends Service {
 	/**
+	 * Application installation instance hash.
+	 */
+	private String instanceHash = "";
+
+	/**
+	 * Remote host domain.
+	 */
+	private String host = "";
+
+	/**
+	 * Name of the remote script to be called.
+	 */
+	private String script = "";
+
+	/**
 	 * Reference to database helper.
 	 */
-	MessageHistoryDatabaseHelper helper = null;
+	private MessageHistoryDatabaseHelper helper = null;
 
 	/**
 	 * Setup alarm for service activation.
@@ -89,7 +103,6 @@ public class NewMessageCheckService extends Service {
 	 */
 	public NewMessageCheckService() {
 		super();
-
 		// TODO Find better way to give name of the service.
 	}
 
@@ -116,39 +129,12 @@ public class NewMessageCheckService extends Service {
 		(new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected Void doInBackground(Void... params) {
+				/*
+				 * If there is no database helper message check can not be done.
+				 */
 				if (helper == null) {
 					return null;
 				}
-
-				String host = "";
-				try {
-					host = getPackageManager().getApplicationInfo(
-							NewMessageCheckService.this.getPackageName(),
-							PackageManager.GET_META_DATA).metaData
-							.getString("host");
-				} catch (NameNotFoundException exception) {
-					System.err.println(exception);
-					return null;
-				}
-
-				String script = "";
-				try {
-					script = getPackageManager().getServiceInfo(
-							new ComponentName(NewMessageCheckService.this,
-									NewMessageCheckService.this.getClass()),
-							PackageManager.GET_SERVICES
-									| PackageManager.GET_META_DATA).metaData
-							.getString("script");
-				} catch (NameNotFoundException exception) {
-					System.err.println(exception);
-					return null;
-				}
-
-				SharedPreferences preference = PreferenceManager
-						.getDefaultSharedPreferences(NewMessageCheckService.this);
-
-				String instanceHash = preference.getString(
-						Util.SHARED_PREFERENCE_INSTNCE_HASH_CODE_KEY, "");
 
 				/*
 				 * Check in SQLite what is the last message hash and take
@@ -233,6 +219,40 @@ public class NewMessageCheckService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
+		/*
+		 * Load installation instance hash.
+		 */
+		instanceHash = PreferenceManager.getDefaultSharedPreferences(
+				NewMessageCheckService.this).getString(
+				Util.SHARED_PREFERENCE_INSTNCE_HASH_CODE_KEY, "");
+
+		/*
+		 * Load host from the manifest file.
+		 */
+		try {
+			host = getPackageManager().getApplicationInfo(
+					NewMessageCheckService.this.getPackageName(),
+					PackageManager.GET_META_DATA).metaData.getString("host");
+		} catch (NameNotFoundException exception) {
+			System.err.println(exception);
+		}
+
+		/*
+		 * Load script name from manifest file.
+		 */
+		try {
+			script = getPackageManager().getServiceInfo(
+					new ComponentName(NewMessageCheckService.this,
+							NewMessageCheckService.this.getClass()),
+					PackageManager.GET_SERVICES | PackageManager.GET_META_DATA).metaData
+					.getString("script");
+		} catch (NameNotFoundException exception) {
+			System.err.println(exception);
+		}
+
+		/*
+		 * Create database helper object if it is not created yet.
+		 */
 		if (helper == null) {
 			helper = new MessageHistoryDatabaseHelper(this);
 		}

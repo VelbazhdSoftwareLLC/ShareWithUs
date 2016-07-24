@@ -19,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
@@ -37,6 +36,21 @@ import eu.veldsoft.share.with.us.storage.MessageHistoryDatabaseHelper;
  * @author Ventsislav Medarov
  */
 public class AnswerMessageActivity extends Activity {
+	/**
+	 * Application installation instance hash.
+	 */
+	private String instanceHash = "";
+
+	/**
+	 * Remote host domain.
+	 */
+	private String host = "";
+
+	/**
+	 * Name of the remote script to be called.
+	 */
+	private String script = "";
+
 	/**
 	 * Database helper reference.
 	 */
@@ -70,7 +84,44 @@ public class AnswerMessageActivity extends Activity {
 		 * != 0) { finish(); return; }
 		 */
 
-		helper = new MessageHistoryDatabaseHelper(AnswerMessageActivity.this);
+		/*
+		 * Load installation instance hash.
+		 */
+		instanceHash = PreferenceManager.getDefaultSharedPreferences(
+				AnswerMessageActivity.this).getString(
+				Util.SHARED_PREFERENCE_INSTNCE_HASH_CODE_KEY, "");
+
+		/*
+		 * Load host from the manifest file.
+		 */
+		try {
+			host = getPackageManager().getApplicationInfo(
+					AnswerMessageActivity.this.getPackageName(),
+					PackageManager.GET_META_DATA).metaData.getString("host");
+		} catch (NameNotFoundException exception) {
+			System.err.println(exception);
+		}
+
+		/*
+		 * Load script name from manifest file.
+		 */
+		try {
+			script = getPackageManager().getActivityInfo(
+					AnswerMessageActivity.this.getComponentName(),
+					PackageManager.GET_ACTIVITIES
+							| PackageManager.GET_META_DATA).metaData
+					.getString("script");
+		} catch (NameNotFoundException exception) {
+			System.err.println(exception);
+		}
+
+		/*
+		 * Create database helper object if it is not created yet.
+		 */
+		if (helper == null) {
+			helper = new MessageHistoryDatabaseHelper(
+					AnswerMessageActivity.this);
+		}
 
 		/*
 		 * Obtain parent message hash code and registration time stamp.
@@ -90,6 +141,10 @@ public class AnswerMessageActivity extends Activity {
 		new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				/*
+				 * If there is no database helper message replay reject can not
+				 * be done.
+				 */
 				if (helper == null) {
 					return;
 				}
@@ -127,6 +182,10 @@ public class AnswerMessageActivity extends Activity {
 		new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				/*
+				 * If there is no database helper message replay can not be
+				 * done.
+				 */
 				if (helper == null) {
 					return;
 				}
@@ -136,38 +195,6 @@ public class AnswerMessageActivity extends Activity {
 				(new AsyncTask<Void, Void, Void>() {
 					@Override
 					protected Void doInBackground(Void... params) {
-						String host = "";
-						try {
-							host = getPackageManager()
-									.getApplicationInfo(
-											AnswerMessageActivity.this
-													.getPackageName(),
-											PackageManager.GET_META_DATA).metaData
-									.getString("host");
-						} catch (NameNotFoundException exception) {
-							System.err.println(exception);
-							return null;
-						}
-
-						String script = "";
-						try {
-							script = getPackageManager().getActivityInfo(
-									AnswerMessageActivity.this
-											.getComponentName(),
-									PackageManager.GET_ACTIVITIES
-											| PackageManager.GET_META_DATA).metaData
-									.getString("script");
-						} catch (NameNotFoundException exception) {
-							System.err.println(exception);
-							return null;
-						}
-
-						SharedPreferences preference = PreferenceManager
-								.getDefaultSharedPreferences(AnswerMessageActivity.this);
-
-						String instanceHash = preference.getString(
-								Util.SHARED_PREFERENCE_INSTNCE_HASH_CODE_KEY,
-								"");
 						String messageHash = Long.toHexString(UUID.randomUUID()
 								.getLeastSignificantBits());
 						String message = ((EditText) findViewById(R.id.message_write))
@@ -201,7 +228,7 @@ public class AnswerMessageActivity extends Activity {
 						}
 
 						try {
-							HttpResponse response = client.execute(post);
+							client.execute(post);
 						} catch (ClientProtocolException exception) {
 							System.err.println(exception);
 						} catch (IOException exception) {
@@ -225,29 +252,6 @@ public class AnswerMessageActivity extends Activity {
 		(new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected Void doInBackground(Void... params) {
-				String host = "";
-				try {
-					host = getPackageManager().getApplicationInfo(
-							AnswerMessageActivity.this.getPackageName(),
-							PackageManager.GET_META_DATA).metaData
-							.getString("host");
-				} catch (NameNotFoundException exception) {
-					System.err.println(exception);
-					return null;
-				}
-
-				String script = "";
-				try {
-					script = getPackageManager().getActivityInfo(
-							AnswerMessageActivity.this.getComponentName(),
-							PackageManager.GET_ACTIVITIES
-									| PackageManager.GET_META_DATA).metaData
-							.getString("script");
-				} catch (NameNotFoundException exception) {
-					System.err.println(exception);
-					return null;
-				}
-
 				HttpClient client = new DefaultHttpClient();
 				client.getParams().setParameter(
 						"http.protocol.content-charset", "UTF-8");

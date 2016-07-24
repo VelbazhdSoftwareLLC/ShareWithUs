@@ -107,6 +107,5 @@ public class LobbyActivity extends Activity {
 						LobbyActivity.this.finish();
 					}
 				});
-
 	}
 }

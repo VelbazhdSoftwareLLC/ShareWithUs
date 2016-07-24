@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -18,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
@@ -35,6 +33,20 @@ import eu.veldsoft.share.with.us.model.Util;
  * @author Ventsislav Medarov
  */
 public class RequestActivity extends Activity {
+	/**
+	 * Application installation instance hash.
+	 */
+	private String instanceHash = "";
+
+	/**
+	 * Remote host domain.
+	 */
+	private String host = "";
+
+	/**
+	 * Name of the remote script to be called.
+	 */
+	private String script = "";
 
 	/**
 	 * {@inheritDoc}
@@ -43,6 +55,37 @@ public class RequestActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
+
+		/*
+		 * Load installation instance hash.
+		 */
+		instanceHash = PreferenceManager.getDefaultSharedPreferences(
+				RequestActivity.this).getString(
+				Util.SHARED_PREFERENCE_INSTNCE_HASH_CODE_KEY, "");
+
+		/*
+		 * Load host from the manifest file.
+		 */
+		try {
+			host = getPackageManager().getApplicationInfo(
+					RequestActivity.this.getPackageName(),
+					PackageManager.GET_META_DATA).metaData.getString("host");
+		} catch (NameNotFoundException exception) {
+			System.err.println(exception);
+		}
+
+		/*
+		 * Load script name from manifest file.
+		 */
+		try {
+			script = getPackageManager().getActivityInfo(
+					RequestActivity.this.getComponentName(),
+					PackageManager.GET_ACTIVITIES
+							| PackageManager.GET_META_DATA).metaData
+					.getString("script");
+		} catch (NameNotFoundException exception) {
+			System.err.println(exception);
+		}
 
 		findViewById(R.id.request_send).setOnClickListener(
 		/**
@@ -57,35 +100,6 @@ public class RequestActivity extends Activity {
 				(new AsyncTask<Void, Void, Void>() {
 					@Override
 					protected Void doInBackground(Void... params) {
-						String host = "";
-						try {
-							host = getPackageManager().getApplicationInfo(
-									RequestActivity.this.getPackageName(),
-									PackageManager.GET_META_DATA).metaData
-									.getString("host");
-						} catch (NameNotFoundException exception) {
-							System.err.println(exception);
-							return null;
-						}
-
-						String script = "";
-						try {
-							script = getPackageManager().getActivityInfo(
-									RequestActivity.this.getComponentName(),
-									PackageManager.GET_ACTIVITIES
-											| PackageManager.GET_META_DATA).metaData
-									.getString("script");
-						} catch (NameNotFoundException exception) {
-							System.err.println(exception);
-							return null;
-						}
-
-						SharedPreferences preference = PreferenceManager
-								.getDefaultSharedPreferences(RequestActivity.this);
-
-						String instanceHash = preference.getString(
-								Util.SHARED_PREFERENCE_INSTNCE_HASH_CODE_KEY,
-								"");
 						String messageHash = Long.toHexString(UUID.randomUUID()
 								.getLeastSignificantBits());
 						String message = ((EditText) findViewById(R.id.request_text))
@@ -118,7 +132,7 @@ public class RequestActivity extends Activity {
 						}
 
 						try {
-							HttpResponse response = client.execute(post);
+							client.execute(post);
 						} catch (ClientProtocolException exception) {
 							System.err.println(exception);
 						} catch (IOException exception) {
