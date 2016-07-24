@@ -9,14 +9,19 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true" >
-
     </EditText>
 
     <Button
         android:id="@+id/request_send"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/request_text"
         android:text="@string/request_send_label" />
-    
+
+    <WebView
+        android:id="@+id/spot01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/request_send" />
+
 </RelativeLayout>

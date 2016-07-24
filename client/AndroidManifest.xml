@@ -26,12 +26,12 @@
             android:value="share.veldsoft.eu" />
 
         <receiver
-            android:name="eu.veldsoft.share.with.us.NewMessageCheckReceiver"
+            android:name=".NewMessageCheckReceiver"
             android:enabled="true"
             android:process=":remote" >
         </receiver>
         <receiver
-            android:name="eu.veldsoft.share.with.us.BootReceiver"
+            android:name=".BootReceiver"
             android:enabled="true"
             android:exported="true" >
             <intent-filter>
@@ -40,13 +40,13 @@
         </receiver>
 
         <service
-            android:name="eu.veldsoft.share.with.us.NewMessageCheckService"
+            android:name=".NewMessageCheckService"
             android:exported="false" >
 
             <!-- TODO Add settings dialog with time out option. -->
             <meta-data
                 android:name="activation_interval"
-                android:value="300000" />
+                android:value="3600000" />
             <meta-data
                 android:name="name"
                 android:value="NewMessageCheckService" />
@@ -56,27 +56,22 @@
         </service>
 
         <activity
-            android:name="eu.veldsoft.share.with.us.LobbyActivity"
+            android:name=".LobbyActivity"
             android:label="@string/title_activity_lobby" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name="eu.veldsoft.share.with.us.AboutActivity"
+            android:name=".AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
         <activity
-            android:name="eu.veldsoft.share.with.us.RequestActivity"
+            android:name=".RequestActivity"
             android:label="@string/title_activity_request" >
             <meta-data
                 android:name="script"
                 android:value="request.php" />
         </activity>
         <activity
-            android:name="eu.veldsoft.share.with.us.JoinTeamActivity"
+            android:name=".JoinTeamActivity"
             android:label="@string/title_activity_join_team" >
             <meta-data
                 android:name="script"
@@ -85,12 +80,29 @@
 
         <!-- This activity should not start more than once simultaneously. -->
         <activity
-            android:launchMode="singleInstance"
-            android:name="eu.veldsoft.share.with.us.AnswerMessageActivity"
-            android:label="@string/title_activity_answer_message" >
+            android:name=".AnswerMessageActivity"
+            android:label="@string/title_activity_answer_message"
+            android:launchMode="singleInstance" >
             <meta-data
                 android:name="script"
                 android:value="answer.php" />
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/title_activity_splash"
+            android:noHistory="true" >
+                        <meta-data
+                android:name="timeout"
+                android:value="5000" />
+            <meta-data
+                android:name="redirect"
+                android:value="eu.veldsoft.share.with.us.LobbyActivity" />
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

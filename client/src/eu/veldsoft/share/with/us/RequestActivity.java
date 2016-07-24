@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 import eu.veldsoft.share.with.us.model.Util;
@@ -55,6 +56,18 @@ public class RequestActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
+
+		/*
+		 * Activate JavaScript.
+		 */
+		((WebView) findViewById(R.id.spot01)).getSettings()
+				.setJavaScriptEnabled(true);
+
+		/*
+		 * Load local web page as spot ad holder.
+		 */
+		((WebView) findViewById(R.id.spot01))
+				.loadUrl("file:///android_asset/spot01.html");
 
 		/*
 		 * Load installation instance hash.

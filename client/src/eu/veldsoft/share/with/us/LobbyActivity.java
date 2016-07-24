@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import eu.veldsoft.share.with.us.model.Util;
 
@@ -25,7 +26,8 @@ public class LobbyActivity extends Activity {
 		String hash = Secure.getString(this.getContentResolver(),
 				Secure.ANDROID_ID);
 		if (hash == null || hash == "") {
-			hash = Long.toHexString(UUID.randomUUID().getLeastSignificantBits());
+			hash = Long
+					.toHexString(UUID.randomUUID().getLeastSignificantBits());
 		}
 
 		SharedPreferences preference = PreferenceManager
@@ -50,6 +52,18 @@ public class LobbyActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lobby);
+
+		/*
+		 * Activate JavaScript.
+		 */
+		((WebView) findViewById(R.id.spot01)).getSettings()
+				.setJavaScriptEnabled(true);
+
+		/*
+		 * Load local web page as spot ad holder.
+		 */
+		((WebView) findViewById(R.id.spot01))
+				.loadUrl("file:///android_asset/spot01.html");
 
 		/*
 		 * Check every time on application load.

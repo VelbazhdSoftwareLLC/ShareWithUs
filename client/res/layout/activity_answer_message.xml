@@ -5,12 +5,10 @@
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <!--
-	<RatingBar>
-		android:id="@+id/replay_rating"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
-    -->
+    <RatingBar
+        android:id="@+id/replay_rating"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/message_read"
@@ -58,5 +56,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_replay_label" />
+
+    <WebView
+        android:id="@+id/spot01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
