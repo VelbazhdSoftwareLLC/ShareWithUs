@@ -215,6 +215,11 @@ public class AnswerMessageActivity extends Activity {
 								.getText().toString();
 						String rating = "" + ((RatingBar) findViewById(R.id.replay_rating)).getRating();
 
+						/*
+						 * Convert to latin letters.
+						 */
+						message = Util.cyrillicToLatin(message);
+						
 						HttpClient client = new DefaultHttpClient();
 						client.getParams().setParameter(
 								"http.protocol.content-charset", "UTF-8");

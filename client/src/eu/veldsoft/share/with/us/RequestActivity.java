@@ -118,6 +118,11 @@ public class RequestActivity extends Activity {
 						String message = ((EditText) findViewById(R.id.request_text))
 								.getText().toString();
 
+						/*
+						 * Convert to latin letters.
+						 */
+						message = Util.cyrillicToLatin(message);
+
 						HttpClient client = new DefaultHttpClient();
 						client.getParams().setParameter(
 								"http.protocol.content-charset", "UTF-8");

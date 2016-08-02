@@ -60,6 +60,9 @@ if(isset($_POST['replay'])) {
 		if($key == 'message') {
 			$message = mysql_real_escape_string( $value );
 		}
+		if($key == 'rating') {
+			$rating = mysql_real_escape_string( $value );
+		}
 	}
 
 	//TODO Replace SQL with stored procedure call.

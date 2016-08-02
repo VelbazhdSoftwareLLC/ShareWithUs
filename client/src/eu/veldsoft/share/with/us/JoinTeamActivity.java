@@ -119,6 +119,11 @@ public class JoinTeamActivity extends Activity {
 						String phone = ((EditText) findViewById(R.id.join_team_phone))
 								.getText().toString();
 
+						/*
+						 * Convert to latin letters.
+						 */
+						names = Util.cyrillicToLatin(names);
+
 						HttpClient client = new DefaultHttpClient();
 						client.getParams().setParameter(
 								"http.protocol.content-charset", "UTF-8");
